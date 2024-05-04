@@ -2,7 +2,25 @@ version: '0.1'
 services:
   mariadb:
     build:
-      context: ./db
+      context: db/
       dockerfile: Dockerfile
     container_name: my-mariadb-container
     restart: always
+    networks:
+      - docker-virtual-network
+    volumes:
+      - /var/lib/docker/volumes/db_backups:/db_backups
+  backend:
+    build:
+      context: back/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - docker-virtual-network
+    volumes:
+      - /var/lib/docker/volumes/backend/logs:/backend/logs
+    depends_on:
+      - mariadb
+      
+networks:
+  docker-virtual-network:

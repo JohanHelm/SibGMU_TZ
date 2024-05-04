@@ -12,7 +12,7 @@ class DbManager:
         self.db_name = 'testdatabase'
         self.config = {'user': 'testuser',
                        'password': 'testpassword',
-                       'host': '172.20.0.2',
+                       'host': 'mariadb',
                        'database': self.db_name,
                        'raise_on_warnings': True}
 

@@ -1,6 +1,6 @@
 from socket import socket, AF_INET, SOCK_STREAM
 
-HOST = '127.0.0.1'
+HOST = '172.21.0.3'
 PORT = 57360
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
@@ -8,9 +8,9 @@ ADDR = (HOST, PORT)
 tcpCliSock = socket(AF_INET, SOCK_STREAM)
 tcpCliSock.connect(ADDR)
 
-# command="INSERT&Маша&175&65&18"
+command="INSERT&Вася&180&75&19"
 # command="SELECT&Маша"
-command="SELECT&all"
+# command="SELECT&all"
 # command = "SELECT"
 def send_to_back(command: str):
     data = bytes(command, 'utf-8')

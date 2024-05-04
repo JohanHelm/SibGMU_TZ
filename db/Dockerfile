@@ -7,5 +7,5 @@ ENV MYSQL_PASSWORD=testpassword
 
 EXPOSE 3306
 
-VOLUME /var/lib/docker/volumes/db_backups
+VOLUME /db_backups
 
