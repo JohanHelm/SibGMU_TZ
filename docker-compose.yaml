@@ -1,0 +1,8 @@
+version: '0.1'
+services:
+  mariadb:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: my-mariadb-container
+    restart: always
