@@ -1,7 +1,10 @@
-FROM nginx:alpine
+FROM python:bookworm
 
-COPY index.html /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY /templates/index.html /frontend/templates/index.html
+ADD app.py /frontend/
+COPY requirements.txt /frontend/requirements.txt
+WORKDIR /frontend/
+RUN pip install -r requirements.txt
 
 
-EXPOSE 80
+CMD ["python", "app.py"]

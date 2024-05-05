@@ -21,6 +21,17 @@ services:
       - /var/lib/docker/volumes/backend/logs:/backend/logs
     depends_on:
       - mariadb
+  frontend:
+    build:
+      context: front/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - docker-virtual-network
+    ports:
+      - "80:5001"
+    depends_on:
+      - backend
       
 networks:
   docker-virtual-network:
