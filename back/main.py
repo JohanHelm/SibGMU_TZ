@@ -1,3 +1,5 @@
+import asyncio
+
 from back_socket import start_server_socket_part
 from loguru import logger
 
@@ -9,4 +11,4 @@ def set_up_logger(logger=logger, file_path="/backend/logs/logfile", rotation=10)
 
 if __name__ == "__main__":
     set_up_logger()
-    start_server_socket_part()
+    asyncio.run(start_server_socket_part())

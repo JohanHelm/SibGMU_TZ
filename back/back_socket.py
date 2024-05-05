@@ -1,4 +1,5 @@
-from socket import socket, AF_INET, SOCK_STREAM
+import asyncio
+from loguru import logger
 
 from db_handler import DbManager
 
@@ -27,26 +28,31 @@ def convert_db_result(db_result: list[tuple]) -> str:
         return "Данные успешно внесены в базу"
 
 
-def start_server_socket_part():
-    manager = DbManager()
-    HOST = ''
-    PORT = 57360
-    BUFSIZ = 1024
-    ADDR = (HOST, PORT)
+HOST = ''
+PORT = 57360
+BUFSIZ = 1024
 
-    tcpSerSock = socket(AF_INET, SOCK_STREAM)
-    tcpSerSock.bind(ADDR)
-    tcpSerSock.listen(5)
 
-    while True:
-        tcpCliSock, addr = tcpSerSock.accept()
-        while True:
-            data = tcpCliSock.recv(BUFSIZ)
-            if data:
-                sql_request = parse_command(data.decode('utf-8'))
-                db_result = manager.data_query(sql_request)
-                db_data = convert_db_result(db_result)
-                tcpCliSock.send(bytes(db_data, 'utf-8'))
-            else:
-                break
-        tcpCliSock.close()
+async def handle_client(reader, writer):
+    data = await reader.read(BUFSIZ)
+    command = data.decode().strip()
+    if command:
+        manager = DbManager()
+        sql_request = parse_command(command)
+        db_result = manager.data_query(sql_request)
+        db_data = convert_db_result(db_result)
+        writer.write(db_data.encode())
+        await writer.drain()
+    writer.close()
+
+
+async def start_server():
+    server = await asyncio.start_server(handle_client, HOST, PORT)
+    addr = server.sockets[0].getsockname()
+    logger.info(f'Serving on {addr}')
+    async with server:
+        await server.serve_forever()
+
+
+async def start_server_socket_part():
+    await asyncio.gather(start_server())
