@@ -6,8 +6,7 @@ app = Flask(__name__)
 
 
 async def send_to_back(command: str) -> str:
-    # HOST = '172.21.0.3'
-    HOST = '127.0.0.1'
+    HOST = 'backend'
     PORT = 57360
     BUFSIZ = 1024
     reader, writer = await asyncio.open_connection(HOST, PORT)
@@ -15,13 +14,13 @@ async def send_to_back(command: str) -> str:
     data = await reader.read(BUFSIZ)
     return data.decode('utf-8').replace("&", ", ")
 
-database = ["Иван", "Мария", "Петр"]
+
 @app.route('/')
 def index():
     command = "SELECT&all"
     db_data = asyncio.run(send_to_back(command))
-    # return render_template('index.html', names=database)
     return render_template('index.html', names=db_data)
+
 
 @app.route('/get_data', methods=['POST'])
 def get_data():
@@ -29,7 +28,7 @@ def get_data():
     command = f"SELECT&{name}"
     db_data = asyncio.run(send_to_back(command))
     return f"Данные для {name} из базы данных...{db_data}"
-    # return f"Данные для {name} из базы данных..."
+
 
 @app.route('/add_person', methods=['POST'])
 def add_person():
@@ -41,7 +40,6 @@ def add_person():
     db_data = asyncio.run(send_to_back(command))
     return redirect('/')
 
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
-
-
