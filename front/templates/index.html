@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Interface</title>
+</head>
+<body>
+    <h1>База данных</h1>
+
+    <!-- Отображение списка имен из базы данных -->
+    <p>В базе данных есть: {% for name in names %}{{ name }} {% endfor %}</p>
+
+    <!-- Получение информации из базы данных -->
+    <p>Для получения информации из базы данных введите имя человека:</p>
+    <form action="/get_data" method="post">
+        <input type="text" name="name" placeholder="Введите имя">
+        <button type="submit">Получить данные</button>
+    </form>
+
+    <!-- Внесение нового человека в базу данных -->
+    <p>Для внесения нового человека в базу данных введите его данные:</p>
+    <form action="/add_person" method="post">
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="height">Рост:</label>
+        <input type="text" id="height" name="height"><br>
+        <label for="weight">Вес:</label>
+        <input type="text" id="weight" name="weight"><br>
+        <label for="age">Возраст:</label>
+        <input type="text" id="age" name="age"><br>
+        <button type="submit">Внести данные</button>
+    </form>
+</body>
+</html>
