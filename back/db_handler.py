@@ -16,6 +16,23 @@ class DbManager:
                        'database': self.db_name,
                        'raise_on_warnings': True}
 
+        self.table_name = 'Persons'
+        self.table_description = """CREATE TABLE Persons(
+                                                            id      INT PRIMARY KEY AUTO_INCREMENT,
+                                                            name    VARCHAR(20),
+                                                            height  INT,
+                                                            weight  INT,
+                                                            age     INT
+                                                        );"""
+        self.default_data = """INSERT INTO Persons (name, height, weight, age) 
+                                VALUES ('Миша', 165, 65, 20),
+                                ('Петя', 175, 85, 22),
+                                ('Вова', 185, 95, 25)
+                            ;"""
+
+        self.default_create_table(self.table_name, self.table_description)
+        self.default_populate_table(self.default_data)
+
     def _connect_to_db(self, attempts: int = 3, delay: int = 2) -> PooledMySQLConnection:
         attempt = 1
         # Implement a reconnection routine
