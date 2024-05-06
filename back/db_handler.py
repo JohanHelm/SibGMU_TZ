@@ -30,9 +30,6 @@ class DbManager:
                                 ('Вова', 185, 95, 25)
                             ;"""
 
-        self.default_create_table(self.table_name, self.table_description)
-        self.default_populate_table(self.default_data)
-
     def _connect_to_db(self, attempts: int = 3, delay: int = 2) -> PooledMySQLConnection:
         attempt = 1
         # Implement a reconnection routine
@@ -105,15 +102,15 @@ class DbManager:
         connection_obj.commit()
         cursor.close()
 
-    def default_create_table(self, table_name: str, table_description: str):
+    def default_create_table(self):
         connection_obj = self._connect_to_db()
         self._use_database(connection_obj)
-        self._create_table(table_description, table_name, connection_obj)
+        self._create_table(self.table_description, self.table_name, connection_obj)
         self._disconnect(connection_obj)
 
-    def default_populate_table(self, add_data: str):
+    def default_populate_table(self):
         connection_obj = self._connect_to_db()
-        self._populate_table(add_data, connection_obj)
+        self._populate_table(self.default_data, connection_obj)
         self._disconnect(connection_obj)
 
     def data_query(self, sql_request: str, params=None):

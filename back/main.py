@@ -1,7 +1,9 @@
 import asyncio
-
-from back_socket import start_server_socket_part
 from loguru import logger
+
+from db_handler import DbManager
+from back_socket import start_server_socket_part
+
 
 def set_up_logger(logger=logger, file_path="/backend/logs/logfile", rotation=10):
     logger.remove(0)
@@ -11,4 +13,8 @@ def set_up_logger(logger=logger, file_path="/backend/logs/logfile", rotation=10)
 
 if __name__ == "__main__":
     set_up_logger()
+    manager = DbManager()
+    manager.default_create_table()
+    manager.default_populate_table()
+
     asyncio.run(start_server_socket_part())
