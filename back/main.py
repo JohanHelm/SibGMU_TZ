@@ -15,6 +15,7 @@ if __name__ == "__main__":
     set_up_logger()
     manager = DbManager()
     manager.default_create_table()
-    manager.default_populate_table()
+    if not manager.data_query(f"SELECT * FROM Persons;"):
+        manager.default_populate_table()
 
     asyncio.run(start_server_socket_part())
